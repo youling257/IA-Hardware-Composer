@@ -16,7 +16,7 @@
 ifeq ($(strip $(BOARD_USES_IA_HWCOMPOSER)), true)
 # Obtain root HWC source path
 HWC_PATH := $(call my-dir)
-
+INTEL_MINIGBM := external/minigbm_intel
 HWC_VERSION_GIT_BRANCH := $(shell pushd $(HWC_PATH) > /dev/null; git rev-parse --abbrev-ref HEAD; popd > /dev/null)
 HWC_VERSION_GIT_SHA := $(shell pushd $(HWC_PATH) > /dev/null; git rev-parse HEAD; popd > /dev/null)
 
