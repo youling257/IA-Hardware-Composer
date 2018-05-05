@@ -24,7 +24,7 @@ LOCAL_WHOLE_STATIC_LIBRARIES := \
 	libhwcomposer_common \
 	libhwcomposer_wsi
 
-LOCAL_MODULE := hwcomposer.$(TARGET_BOARD_PLATFORM)
+LOCAL_MODULE := hwcomposer.intel
 LOCAL_MODULE_TAGS := optional
 # Preffered paths for all vendor hals /vendor/lib/hw
 LOCAL_PROPRIETARY_MODULE := true
