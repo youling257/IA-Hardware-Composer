@@ -53,8 +53,8 @@ LOCAL_CFLAGS += \
 	-DUSE_VNDK
 endif
 
-#LOCAL_CPPFLAGS += \
-#	-DENABLE_DOWNSCALING
+LOCAL_CPPFLAGS += \
+	-Wno-missing-field-initializers
 
 LOCAL_SRC_FILES := \
         compositor/compositor.cpp \
