@@ -209,7 +209,6 @@ void DisplayQueue::GetCachedLayers(const std::vector<OverlayLayer>& layers,
 
       if (index >= threshold) {
         removed_layers = true;
-        size_t original_size = source_layers_size;
         bool has_one_layer = source_layers_size == 1 ? true : false;
         if (!has_one_layer) {
           last_plane.ResetLayers(layers, threshold, &needs_plane_validation);
