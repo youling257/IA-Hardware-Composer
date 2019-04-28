@@ -33,7 +33,6 @@ LOCAL_MODULE_CLASS := SHARED_LIBRARIES
 LOCAL_MODULE_SUFFIX := $(TARGET_SHLIB_SUFFIX)
 include $(BUILD_SHARED_LIBRARY)
 
-ifeq ($(strip $(TARGET_USES_HWC2)), true)
 # libhwcservice
 HWC_BUILD_DIRS := \
 $(HWC_PATH)/os/android/libhwcservice/Android.mk \
@@ -45,7 +44,6 @@ ifneq (,$(filter eng,$(TARGET_BUILD_VARIANT)))
 endif
 
 include $(HWC_BUILD_DIRS)
-endif
 
 # Static lib: libhwcomposer_common and libhwcomposer_wsi
 include $(HWC_PATH)/common/Android.mk
