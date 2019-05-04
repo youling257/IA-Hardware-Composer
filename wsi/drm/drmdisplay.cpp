@@ -742,7 +742,7 @@ bool DrmDisplay::CommitFrame(
   for (const DisplayPlaneState &comp_plane : comp_planes) {
     DrmPlane *plane = static_cast<DrmPlane *>(comp_plane.GetDisplayPlane());
 
-    OverlayLayer *layer = (OverlayLayer *)comp_plane.GetOverlayLayer();
+    auto layer = const_cast<OverlayLayer *>(comp_plane.GetOverlayLayer());
     const HwcRect<int> &display_rect = layer->GetDisplayFrame();
 
     // Recalculate the layer's display frame position before drm commit
