@@ -120,6 +120,8 @@ LOCAL_CPPFLAGS += \
 	-Wcast-qual -Wcast-align \
 	-D_GNU_SOURCE=1 -D_FILE_OFFSET_BITS=64 \
 	-O3 \
+	-Wno-cast-qual \
+	-Wno-sign-compare \
 	-Wno-unused-private-field \
 	-Wno-unused-function \
 	-Wno-unused-parameter \

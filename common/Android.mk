@@ -127,7 +127,7 @@ LOCAL_CPPFLAGS += \
         -fstack-protector-strong \
         -Wformat -Wformat-security \
         -std=c++14 -D_GNU_SOURCE=1 -D_FILE_OFFSET_BITS=64 \
-        -Wall -Wsign-compare -Wpointer-arith \
+        -Wall -Wno-sign-compare -Wpointer-arith \
         -Wcast-qual -Wcast-align \
 	-DLOCK_DIR_PREFIX='"/vendor/etc"' \
         -DHWC_DISPLAY_INI_PATH='"/vendor/etc/hwc_display.ini"' \
@@ -135,7 +135,7 @@ LOCAL_CPPFLAGS += \
         -DKVM_HWC_PROPERTY='"ro.graphics.hwcomposer.kvm"' \
         -DUSE_ANDROID_PROPERTIES \
         -D_GNU_SOURCE=1 -D_FILE_OFFSET_BITS=64 \
-        -Wno-unused-parameter \
+        -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable \
         -O3
 
 LOCAL_CPPFLAGS += -DVA_SUPPORT_COLOR_RANGE
