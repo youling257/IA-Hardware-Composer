@@ -1079,10 +1079,10 @@ HWC2::Error IAHWC2::HwcDisplay::GetDisplayIdentificationData(
 
   if (display_) {
     if (display_->GetDisplayIdentificationData(outPort, outDataSize, outData)) {
-      (outData == NULL) ? ITRACE("outPort=%x, outDataSize=%x, outData=NULL",
-                                 outPort, outDataSize)
-                        : ITRACE("outPort=%x, outDataSize=%x, outData=%x",
-                                 outPort, outDataSize, outData);
+      (outData == NULL) ? ITRACE("outPort=%lx, outDataSize=%lx, outData=NULL",
+                                 (unsigned long)outPort, (unsigned long)outDataSize)
+                        : ITRACE("outPort=%lx, outDataSize=%lx, outData=%lx",
+                                 (unsigned long)outPort, (unsigned long)outDataSize, (unsigned long)outData);
 
       return HWC2::Error::None;
     }
