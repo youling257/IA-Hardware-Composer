@@ -878,10 +878,10 @@ void DisplayPlaneState::Dump() const {
          private_data_->rotated_display_frame_.right);
   ETRACE(
       "DisplayPlaneState Scanout %d, videoplane %d, iscuror %d, use plane "
-      "scalar %d, need composition %d, source layers %d, rotation %d, plane_id "
+      "scalar %d, need composition %d, source layers %lu, rotation %d, plane_id "
       "%d",
       Scanout(), IsVideoPlane(), IsCursorPlane(), IsUsingPlaneScalar(),
-      NeedsOffScreenComposition(), GetSourceLayers().size(),
+      NeedsOffScreenComposition(), (unsigned long)GetSourceLayers().size(),
       GetOverlayLayer()->GetPlaneTransform(), private_data_->plane_->id());
 
   if (GetOverlayLayer()->GetBuffer())
@@ -891,7 +891,7 @@ void DisplayPlaneState::Dump() const {
          NeedsSurfaceAllocation());
   const std::vector<size_t> &source_layers = GetSourceLayers();
   for (auto &index : source_layers) {
-    ETRACE("DisplayPlaneState source layers %d", index);
+    ETRACE("DisplayPlaneState source layers %lu", (unsigned long)index);
   }
   const std::vector<NativeSurface *> &surfaces = GetSurfaces();
   for (auto &surface : surfaces) {

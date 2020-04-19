@@ -311,7 +311,7 @@ void DisplayQueue::InitializeOverlayLayers(
 
 void DisplayQueue::DumpCurrentDisplayPlaneList(
     DisplayPlaneStateList& composition) {
-  ETRACE("Dumping DisplayPlaneState size %d", composition.size());
+  ETRACE("Dumping DisplayPlaneState size %lu", (unsigned long)composition.size());
   for (auto& state : composition) {
     state.Dump();
   }
