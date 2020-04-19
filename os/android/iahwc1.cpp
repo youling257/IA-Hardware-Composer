@@ -113,7 +113,7 @@ struct hwc_context_t {
   hwc_composer_device_1_t device;
   hwc_procs_t const *procs = NULL;
 
-  hwcomposer::GpuDevice &device_ = GpuDevice::getInstance();
+  hwcomposer::GpuDevice &device_ = hwcomposer::GpuDevice::getInstance();
   std::vector<HwcDisplay> extended_displays_;
   HwcDisplay primary_display_;
   HwcDisplay virtual_display_;
@@ -187,7 +187,7 @@ int IAHwc1Layer::InitFromHwcLayer(hwc_layer_1_t *sf_layer) {
       sf_layer->sourceCropf.right, sf_layer->sourceCropf.bottom));
   hwc_layer_->SetDisplayFrame(hwcomposer::HwcRect<int>(
       sf_layer->displayFrame.left, sf_layer->displayFrame.top,
-      sf_layer->displayFrame.right, sf_layer->displayFrame.bottom));
+      sf_layer->displayFrame.right, sf_layer->displayFrame.bottom), 0, 0);
 
   uint32_t transform = 0;
   if (sf_layer->transform == HWC_TRANSFORM_ROT_270) {
