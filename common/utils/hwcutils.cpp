@@ -156,21 +156,19 @@ uint32_t GetTotalPlanesForFormat(uint32_t format) {
   return 1;
 }
 
-#ifdef KVM_HWC_PROPERTY
-bool IsKvmPlatform() {
-  const char* key = KVM_HWC_PROPERTY;
+bool IsEdidFilting() {
+  const char* key = ALL_EDID_FLAG_PROPERTY;
   char* value = new char[20];
-  const char* property_true = "true";
-  int len = property_get(key, value, "");
+  const char* property_true = "1";
+  int len = property_get(key, value, "0");
   if (len > 0 && strcmp(value, property_true) == 0) {
     delete[] value;
-    return true;
+    return false;
   } else {
     delete[] value;
-    return false;
+    return true;
   }
 }
-#endif
 
 std::string StringifyRect(HwcRect<int> rect) {
   std::stringstream ss;

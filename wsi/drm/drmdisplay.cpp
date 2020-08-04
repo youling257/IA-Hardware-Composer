@@ -418,13 +418,19 @@ bool DrmDisplay::GetDisplayConfigs(uint32_t *num_configs, uint32_t *configs) {
   uint32_t prefer_display_mode = prefer_display_mode_;
   uint32_t perf_display_mode = perf_display_mode_;
 
+  bool need_filter = IsEdidFilting();
+
   if (!configs) {
-    prefer_display_mode = FindPreferedDisplayMode(modes_size);
-    perf_display_mode = FindPerformaceDisplayMode(modes_size);
-    if (prefer_display_mode == perf_display_mode)
-      *num_configs = 1;
-    else
-      *num_configs = 2;
+    if (need_filter) {
+      prefer_display_mode = FindPreferedDisplayMode(modes_size);
+      perf_display_mode = FindPerformaceDisplayMode(modes_size);
+      if (prefer_display_mode == perf_display_mode)
+        *num_configs = 1;
+      else
+        *num_configs = 2;
+    } else {
+      *num_configs = modes_size;
+    }
     IHOTPLUGEVENTTRACE(
         "GetDisplayConfigs: Total Configs: %d pipe: %d display: %p",
         *num_configs, pipe_, this);
@@ -434,11 +440,15 @@ bool DrmDisplay::GetDisplayConfigs(uint32_t *num_configs, uint32_t *configs) {
   IHOTPLUGEVENTTRACE(
       "GetDisplayConfigs: Populating Configs: %d pipe: %d display: %p",
       *num_configs, pipe_, this);
-
-  configs[0] = prefer_display_mode;
-  if (prefer_display_mode != perf_display_mode)
-    configs[1] = perf_display_mode;
-
+  if (need_filter) {
+    configs[0] = prefer_display_mode;
+    if (prefer_display_mode != perf_display_mode)
+      configs[1] = perf_display_mode;
+  } else {
+    uint32_t size = *num_configs > modes_size ? modes_size : *num_configs;
+    for (uint32_t i = 0; i < size; i++)
+      configs[i] = i;
+  }
   return true;
 }
 
@@ -617,8 +627,7 @@ bool DrmDisplay::Commit(
     *commit_fence = 0;
   }
 #else
-#ifdef KVM_HWC_PROPERTY
-  if (IsKvmPlatform()) {
+  if (GpuDevice::getInstance().IsGvtActive()) {
     int32_t fence = *commit_fence;
     if (fence > 0) {
       HWCPoll(fence, -1);
@@ -626,7 +635,6 @@ bool DrmDisplay::Commit(
       *commit_fence = 0;
     }
   }
-#endif
 #endif
   if (first_commit_) {
     TraceFirstCommit();
@@ -693,17 +701,13 @@ bool DrmDisplay::CommitFrame(
   }
 
 #ifndef ENABLE_DOUBLE_BUFFERING
-#ifdef KVM_HWC_PROPERTY
-  if (!IsKvmPlatform()) {
-#endif
+  if (!GpuDevice::getInstance().IsGvtActive()) {
     if (previous_fence > 0) {
       HWCPoll(previous_fence, -1);
       close(previous_fence);
       *previous_fence_released = true;
     }
-#ifdef KVM_HWC_PROPERTY
   }
-#endif
 #endif
 
   int ret = drmModeAtomicCommit(gpu_fd_, pset, flags, NULL);
