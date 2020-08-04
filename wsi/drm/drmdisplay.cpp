@@ -627,7 +627,8 @@ bool DrmDisplay::Commit(
     *commit_fence = 0;
   }
 #else
-  if (GpuDevice::getInstance().IsGvtActive()) {
+#ifdef KVM_HWC_PROPERTY
+  if (IsKvmPlatform()) {
     int32_t fence = *commit_fence;
     if (fence > 0) {
       HWCPoll(fence, -1);
@@ -635,6 +636,7 @@ bool DrmDisplay::Commit(
       *commit_fence = 0;
     }
   }
+#endif
 #endif
   if (first_commit_) {
     TraceFirstCommit();
@@ -701,13 +703,17 @@ bool DrmDisplay::CommitFrame(
   }
 
 #ifndef ENABLE_DOUBLE_BUFFERING
-  if (!GpuDevice::getInstance().IsGvtActive()) {
+#ifdef KVM_HWC_PROPERTY
+  if (!IsKvmPlatform()) {
+#endif
     if (previous_fence > 0) {
       HWCPoll(previous_fence, -1);
       close(previous_fence);
       *previous_fence_released = true;
     }
+#ifdef KVM_HWC_PROPERTY
   }
+#endif
 #endif
 
   int ret = drmModeAtomicCommit(gpu_fd_, pset, flags, NULL);
